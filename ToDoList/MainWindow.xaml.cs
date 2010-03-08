@@ -62,6 +62,7 @@ namespace ToDoList
                 item.Add(desc);
                 ToDoList.Root.Add(item);
                 lvToDo.Items.Add(item.Element("description").Value);
+                txtItemDesc.Text = "";
             }
         }
 
@@ -79,8 +80,8 @@ namespace ToDoList
 
         private void lvToDo_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MessageBoxResult mbr = MessageBox.Show("Mark this as done?", "Done?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-            if (mbr == MessageBoxResult.Yes)
+            MessageBoxResult done = MessageBox.Show("Mark this as done?", "Done?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+            if (done == MessageBoxResult.Yes)
             {
                 XElement item = ToDoList.Root.Descendants("todo").Where(x => x.Descendants("donedatetime").Count() == 0).ElementAt(lvToDo.SelectedIndex);
                 XElement doneAt = new XElement("donedatetime", DateTime.Now.ToString("yyyy-dd-MMThh:mm:ss.ms"));
