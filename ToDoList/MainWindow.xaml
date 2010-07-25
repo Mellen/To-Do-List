@@ -1,9 +1,29 @@
-﻿<Window x:Class="ToDoList.MainWindow"
+﻿<Window x:Class="ToDoListApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:todo="clr-namespace:ToDoListApp"
         Title="To Do:" Height="393" Width="518" Closing="Window_Closing" ResizeMode="CanMinimize" WindowStyle="ToolWindow" Icon="/ToDoList;component/todo.ico">
+    <Window.Resources>
+        <ContextMenu x:Key="itemMenu">
+            <MenuItem Header="_Edit" Click="EditMenu_Click"/>
+            <MenuItem Header="_Mark as done" Click="MarkAsDone"/>
+            <TextBlock></TextBlock>
+            <MenuItem Header="_Delete" Click="Delete_Click"/>
+        </ContextMenu>
+        <DataTemplate x:Key="itemsTodo">
+            <TextBlock Text="{Binding Path=Description}"/>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=IsDone}" Value="True">
+                    <Setter Property="Visibility" Value="Hidden" />
+                    <Setter Property="Height" Value="0" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
-        <ListView Name="lvToDo" Height="313" VerticalAlignment="Top" SelectionMode="Single" MouseDoubleClick="lvToDo_MouseDoubleClick">
+
+        <ListView Name="lvToDo" Height="313" VerticalAlignment="Top" SelectionMode="Single" 
+                  MouseDoubleClick="lvToDo_MouseDoubleClick" ContextMenu="{StaticResource itemMenu}" ItemsSource="{Binding Path=Items}" ItemTemplate="{StaticResource itemsTodo}">
         </ListView>
         <Grid Height="35" HorizontalAlignment="Left" Margin="0,319,0,0" Name="gridControls" VerticalAlignment="Top" Width="496">
             <Grid.ColumnDefinitions>
@@ -11,7 +31,7 @@
                 <ColumnDefinition Width="327*" />
                 <ColumnDefinition Width="69" />
             </Grid.ColumnDefinitions>
-                
+
             <TextBox Height="23" Name="txtItemDesc" Grid.Column="1" Grid.Row="0" />
             <Button Content="Add Item" HorizontalAlignment="left" Grid.Column="2" Name="btnAdd" Click="btnAdd_Click" />
             <Label Content="Item Description" HorizontalAlignment="Left" Name="label1" VerticalAlignment="Center"  />
