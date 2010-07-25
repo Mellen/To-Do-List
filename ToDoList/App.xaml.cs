@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace ToDoList
+namespace ToDoListApp
 {
     /// <summary>
     /// Interaction logic for App.xaml
