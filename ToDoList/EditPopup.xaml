@@ -1,11 +1,22 @@
 ﻿<Window x:Class="ToDoListApp.EditPopup"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Edit ToDo Item" Height="Auto" Width="Auto" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+        Title="Edit ToDo Item" Height="Auto" Width="Auto" WindowStyle="ToolWindow" 
+        WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight"
+        ShowInTaskbar="False" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
         <StackPanel>
             <TextBlock>To do Item:</TextBlock>
             <TextBox Text="{Binding Path=Description, Mode=TwoWay}"/>
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button IsDefault="True" Grid.Column="0" Click="OK_Click">OK</Button>
+                <Button IsCancel="True" Grid.Column="2">Cancel</Button>
+            </Grid>
         </StackPanel>
     </Grid>
 </Window>

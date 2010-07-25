@@ -122,6 +122,10 @@ namespace ToDoListApp
         {
             Items.Remove(item);
             item.ToDo.Remove();
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("Items"));
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

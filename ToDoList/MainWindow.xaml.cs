@@ -46,38 +46,51 @@ namespace ToDoListApp
 
         private void MarkAsDone(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult done = MessageBox.Show("Mark this as done?", "Done?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-            if (done == MessageBoxResult.Yes)
+            if (lvToDo.SelectedItem != null)
             {
-                (lvToDo.SelectedItem as ToDoItem).DoneDateTime = DateTime.Now.ToString("yyyy-dd-MMThh:mm:ss.ms");
+                MessageBoxResult done = MessageBox.Show("Mark this as done?", "Done?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                if (done == MessageBoxResult.Yes)
+                {
+                    (lvToDo.SelectedItem as ToDoItem).DoneDateTime = DateTime.Now.ToString("yyyy-dd-MMThh:mm:ss.ms");
+                }
+                lvToDo.Items.Refresh();
             }
-            lvToDo.Items.Refresh();
         }
 
         private void lvToDo_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MessageBoxResult done = MessageBox.Show("Mark this as done?", "Done?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-            if (done == MessageBoxResult.Yes)
+            if (lvToDo.SelectedItem != null)
             {
-                (lvToDo.SelectedItem as ToDoItem).DoneDateTime = DateTime.Now.ToString("yyyy-dd-MMThh:mm:ss.ms");
+                MessageBoxResult done = MessageBox.Show("Mark this as done?", "Done?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                if (done == MessageBoxResult.Yes)
+                {
+                    (lvToDo.SelectedItem as ToDoItem).DoneDateTime = DateTime.Now.ToString("yyyy-dd-MMThh:mm:ss.ms");
+                }
+                lvToDo.Items.Refresh();
             }
-            lvToDo.Items.Refresh();
         }
 
         private void EditMenu_Click(object sender, RoutedEventArgs e)
         {
-            EditPopup ep = new EditPopup(lvToDo.SelectedItem as ToDoItem);
-            ep.ShowDialog();
+            if (lvToDo.SelectedItem != null)
+            {
+                EditPopup ep = new EditPopup(lvToDo.SelectedItem as ToDoItem);
+                ep.Owner = this;
+                ep.ShowDialog();
+            }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult del = MessageBox.Show("Delete this item?", "Delete?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-            if (del == MessageBoxResult.Yes)
+            if (lvToDo.SelectedItem != null)
             {
-                tdl.DeleteItem(lvToDo.SelectedItem as ToDoItem);
+                MessageBoxResult del = MessageBox.Show("Delete this item?", "Delete?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                if (del == MessageBoxResult.Yes)
+                {
+                    tdl.DeleteItem(lvToDo.SelectedItem as ToDoItem);
+                }
+                lvToDo.Items.Refresh();
             }
-            lvToDo.Items.Refresh();
         }
     }
 }

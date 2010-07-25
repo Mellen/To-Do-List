@@ -19,10 +19,25 @@ namespace ToDoListApp
     /// </summary>
     public partial class EditPopup : Window
     {
+        private string tempdesc;
         public EditPopup(ToDoItem item)
         {
             InitializeComponent();
             DataContext = item;
+            tempdesc = item.Description;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            bool result = DialogResult??false;
+            if (!result)
+                (DataContext as ToDoItem).Description = tempdesc;
+        }
+
+        private void OK_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            Close();
         }
     }
 }
