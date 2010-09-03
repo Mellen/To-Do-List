@@ -66,7 +66,17 @@ namespace ToDoListApp
 
         public override string ToString()
         {
-            return Description;
+            string result;
+            if (DoneDateTime != "")
+            {
+                DateTime doneAt = DateTime.Parse(DoneDateTime);
+                result = String.Format("{0} - Done at: {1:yyyy-MM-dd hh:mm}", Description, doneAt);
+            }
+            else
+            {
+                result = Description;
+            }
+            return result;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -77,8 +87,41 @@ namespace ToDoListApp
     {
         [NonSerialized]
         private XDocument todoList;
+        [NonSerialized]
+        private bool showDoneItems;
+        [NonSerialized]
+        private List<ToDoItem> items;
 
-        public List<ToDoItem> Items { get; private set; }
+        public List<ToDoItem> Items 
+        {
+            get
+            {
+                if (showDoneItems)
+                {
+                    return items;
+                }
+                else
+                {
+                    return (from i in items
+                            where i.DoneDateTime == ""
+                            select i).ToList();
+                }
+            }
+        }
+
+        public bool ShowDoneItems 
+        { 
+            get { return showDoneItems; }
+            set 
+            { 
+                showDoneItems = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("ShowDoneItems"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Items"));
+                }
+            } 
+        }
 
         public ToDoList()
         {
@@ -87,14 +130,14 @@ namespace ToDoListApp
             if (File.Exists(listFileName))
             {
                 todoList = XDocument.Load(listFileName);
-                Items = (from e in todoList.Root.Elements()
+                items = (from e in todoList.Root.Elements()
                          select new ToDoItem(e)).ToList();
             }
             else
             {
                 todoList = new XDocument();
                 todoList.Add(new XElement("todolist"));
-                Items = new List<ToDoItem>();
+                items = new List<ToDoItem>();
             }
 
         }
@@ -103,14 +146,14 @@ namespace ToDoListApp
         {
             XElement item = new XElement("todo");
             XElement createAt = new XElement("createdatetime");
-            createAt.Value = DateTime.Now.ToString("yyyy-dd-MMThh:mm:ss.ms");
+            createAt.Value = DateTime.Now.ToString("yyyy-MM-ddThh:mm:ss.ms");
             item.Add(createAt);
             XElement desc = new XElement("description");
             desc.Value = description;
             item.Add(desc);
 
             todoList.Root.Add(item);
-            Items.Add(new ToDoItem(item));
+            items.Add(new ToDoItem(item));
 
             if (PropertyChanged != null)
             {
@@ -120,7 +163,7 @@ namespace ToDoListApp
 
         public void DeleteItem(ToDoItem item)
         {
-            Items.Remove(item);
+            items.Remove(item);
             item.ToDo.Remove();
             if (PropertyChanged != null)
             {
