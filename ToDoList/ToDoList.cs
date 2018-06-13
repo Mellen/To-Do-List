@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Configuration;
 using System.IO;
 using System.ComponentModel;
+using ToDoListApp.Properties;
 
 namespace ToDoListApp
 {
@@ -126,7 +127,7 @@ namespace ToDoListApp
         public ToDoList()
         {
             AppSettingsReader asr = new AppSettingsReader();
-            string listFileName = (string)asr.GetValue("listFileName", typeof(string));
+            string listFileName = Settings.Default.listFileName;
             if (File.Exists(listFileName))
             {
                 todoList = XDocument.Load(listFileName);
@@ -176,8 +177,8 @@ namespace ToDoListApp
         public void Save()
         {
             AppSettingsReader asr = new AppSettingsReader();
-            string listFileName = (string)asr.GetValue("listFileName", typeof(string));
-            todoList.Save(listFileName);
+            string listFileName = Settings.Default.listFileName;
+            todoList.Save(Settings.Default.listFileName);
         }
     }
 }

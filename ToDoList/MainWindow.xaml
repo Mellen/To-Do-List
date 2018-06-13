@@ -9,6 +9,7 @@
             <MenuItem Header="_Mark as done" Click="MarkAsDone"/>
             <TextBlock></TextBlock>
             <MenuItem Header="_Delete" Click="Delete_Click"/>
+            <MenuItem Header="_Setting" Click="Setting_Click"/>
         </ContextMenu>
     </Window.Resources>
     <Grid>

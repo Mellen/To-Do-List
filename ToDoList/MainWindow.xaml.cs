@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using System.Configuration;
 using System.IO;
+using ToDoListApp.Properties;
 
 namespace ToDoListApp
 {
@@ -27,6 +28,12 @@ namespace ToDoListApp
         {
             InitializeComponent();
             DataContext = tdl;
+            if(Settings.Default.FirstUse)
+            {
+                SettingWindow frm2 = new SettingWindow();
+                Settings.Default.FirstUse = false;
+                frm2.Show();
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -83,6 +90,12 @@ namespace ToDoListApp
                 }
                 lvToDo.Items.Refresh();
             }
+        }
+
+        private void Setting_Click(object sender, RoutedEventArgs e)
+        {
+            SettingWindow frm2 = new SettingWindow();
+            frm2.Show();
         }
     }
 }
